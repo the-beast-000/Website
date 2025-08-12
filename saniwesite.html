@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Stitch Craft— Handmade Crochet Keychains & Decor</title>
+  <style>
+    :root{--accent:#F97316;--muted:#6B7280;--bg:#f7fafc;--card:#fff}
+    *{box-sizing:border-box}
+    body{font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial; margin:0; background:var(--bg); color:#111}
+    header{background:linear-gradient(90deg,#fff 0%,#fff0 100%); padding:28px 18px; display:flex; align-items:center; justify-content:space-between}
+    .logo{display:flex; gap:12px; align-items:center}
+    .logo .mark{width:44px;height:44px;border-radius:10px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700}
+    .hero{display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center;padding:36px 18px}
+    .hero h1{font-size:32px;margin:0 0 12px}
+    .hero p{color:var(--muted);margin:0 0 18px}
+    .btn{background:var(--accent);color:#fff;padding:10px 16px;border-radius:10px;border:0;cursor:pointer}
+    .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;padding:18px}
+    .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:0 6px 18px rgba(16,24,40,.06);display:flex;flex-direction:column}
+    .card img{width:100%;height:170px;object-fit:cover;border-radius:8px}
+    .meta{display:flex;justify-content:space-between;align-items:center;padding-top:10px}
+    .price{font-weight:700}
+    .muted{color:var(--muted);font-size:13px}
+    .grid-side{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(16,24,40,.04)}
+    .cart-list{list-style:none;padding:0;margin:0}
+    .cart-item{display:flex;gap:8px;align-items:center;padding:8px 0;border-bottom:1px dashed #eee}
+    .cart-item img{width:44px;height:44px;object-fit:cover;border-radius:6px}
+    footer{padding:22px 18px;color:var(--muted);font-size:14px}
+
+    /* product modal */
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.45);z-index:60}
+    .modal .panel{width:92%;max-width:920px;background:#fff;border-radius:12px;padding:18px;display:grid;grid-template-columns:1fr 320px;gap:16px}
+    .close{background:#eee;border:0;padding:6px 10px;border-radius:8px;cursor:pointer}
+
+    @media (max-width:900px){.hero{grid-template-columns:1fr;}.modal .panel{grid-template-columns:1fr}} 
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><div class="mark">SC</div><div>
+      <div style="font-weight:700">StitchCraft</div>
+      <div style="font-size:13px;color:var(--muted)">Handmade keychains, decor & gifts</div>
+    </div></div>
+    <nav style="display:flex;gap:12px;align-items:center">
+      <button class="btn" id="open-cart">Cart (<span id="cart-count">0</span>)</button>
+    </nav>
+  </header>
+
+  <section class="hero">
+    <div>
+      <h1>Handmade crochet gifts — cute, durable, and made with love</h1>
+      <p>Keychains, wall hangings, toys and more. Each piece is crocheted by hand — perfect for gifting or decorating your space.</p>
+      <div style="display:flex;gap:8px"><a href="#contact" style="margin-left:8px;align-self:center;color:var(--muted);text-decoration:none">Contact for custom orders</a></div>
+    </div>
+    <div class="grid-side">
+      <h3 style="margin:0 0 8px">Cart</h3>
+      <div id="cart-contents">
+        <p class="muted">Your cart is empty</p>
+      </div>
+    </div>
+  </section>
+
+  <main>
+    <section class="gallery" id="products">
+      <!-- PRODUCT CARDS inserted by JS -->
+    </section>
+  </main>
+
+  <footer>
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap">
+      <div>© CrochetCrafts • Handmade items</div>
+      <div style="display:flex;gap:12px;align-items:center">
+        <a href="#contact" style="text-decoration:none;color:var(--muted)">Contact +91 7709110389</a>
+        <a href="https://www.instagram.com/stiitchcraftstudio/" style="text-decoration:none;color:var(--muted)">Instagram Stiitchcraftstudio</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- product detail modal -->
+  <div class="modal" id="modal">
+    <div class="panel">
+      <div>
+        <img id="modal-img" src="" alt="" style="width:100%;height:360px;object-fit:cover;border-radius:8px">
+      </div>
+      <div>
+        <div style="display:flex;justify-content:space-between;align-items:start">
+          <div>
+            <h2 id="modal-title" style="margin:0">Product</h2>
+            <div class="muted" id="modal-desc">Description</div>
+          </div>
+          <button class="close" id="close-modal">Close</button>
+        </div>
+        <div style="margin-top:18px">
+          <div style="font-size:20px;font-weight:700">₹<span id="modal-price">0</span></div>
+          <div style="margin-top:12px;display:flex;gap:8px">
+            <input type="number" id="qty" value="1" min="1" style="width:84px;padding:8px;border-radius:8px;border:1px solid #eee">
+            <button class="btn" id="add-to-cart-modal">Add to cart</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Product list - update image filenames below to the ones you uploaded
+    const products = [
+      {id:1, title:'Starfish Keychain (Orange)', price:50, img:'./WhatsApp Image 2025-08-12 at 4.46.00 PM.jpeg', desc:'Hand-crocheted starfish keychain.'},
+      {id:2, title:'Ghost Keychain', price:60, img:'./WhatsApp Image 2025-08-12 at 4.46.02 PM (2).jpeg', desc:'Cute Ghost keychain.'},
+      {id:3, title:'Triple Fish Keyring', price:50, img:'./WhatsApp Image 2025-08-12 at 4.46.01 PM (1).jpeg', desc:'Three tiny fishes stacked on a keyring.'},
+      {id:4, title:'Turtle Keychain (Pink Shell)', price:70, img:'./WhatsApp Image 2025-08-12 at 4.46.02 PM.jpeg', desc:'Mini turtle keychain with pastel shell.'},
+      {id:5, title:'Poké Ball Keychain', price:50, img:'./WhatsApp Image 2025-08-12 at 4.46.02 PM (3).jpeg', desc:'Round poké-ball style keychain.'},
+      {id:6, title:'Crochet Headband', price:150, img:'./WhatsApp Image 2025-08-12 at 4.46.00 PM (2).jpeg', desc:'Handmade headband in soft yarn.'},
+      {id:7, title:'Round Doily / Mat', price:250, img:'./WhatsApp Image 2025-08-12 at 4.46.01 PM.jpeg', desc:'Decorative crocheted mat (approx 30cm).'},
+      {id:8, title:'Hanging Spiral Decoration', price:100, img:'./WhatsApp Image 2025-08-12 at 4.46.03 PM (1).jpeg', desc:'Colorful spiral hanging for doors/walls.'},
+      {id:9, title:'Flower Stem', price:100, img:'./WhatsApp Image 2025-08-12 at 4.46.03 PM.jpeg', desc:'Set of two crochet rose stems.'},
+      {id:10, title:'Jellyfish keychain', price:60, img:'./WhatsApp Image 2025-08-12 at 4.46.02 PM (1).jpeg', desc:'Hand-crocheted Jellyfish keychain'},
+      {id:10, title:'Hand Gajra', price:100, img:'./WhatsApp Image 2025-08-12 at 4.46.00 PM (1).jpeg', desc:'Hand-crocheted Hand Gajra'}
+    ];
+
+    const gallery = document.getElementById('products');
+    const cart = [];
+
+    function renderGallery(){
+      gallery.innerHTML='';
+      products.forEach(p=>{
+        const el = document.createElement('div'); el.className='card';
+        el.innerHTML = `<img src="${p.img}" alt="${p.title}" loading="lazy" onerror="this.style.opacity=.4"><div style=\"padding-top:8px\"><div style=\"font-weight:700\">${p.title}</div><div class=\"muted\">${p.desc}</div></div><div class=\"meta\"><div class=\"price\">₹${p.price}</div><div><button class=\"btn\" onclick=\"openModal(${p.id})\">View</button></div></div>`;
+        gallery.appendChild(el);
+      });
+    }
+
+    function scrollToGallery(){document.getElementById('products').scrollIntoView({behavior:'smooth'});}
+
+    // Modal logic
+    const modal = document.getElementById('modal');
+    const modalImg = document.getElementById('modal-img');
+    const modalTitle = document.getElementById('modal-title');
+    const modalPrice = document.getElementById('modal-price');
+    const modalDesc = document.getElementById('modal-desc');
+    const qty = document.getElementById('qty');
+    let activeId = null;
+
+    function openModal(id){
+      const p = products.find(x=>x.id===id); if(!p) return;
+      activeId=id; modalImg.src=p.img; modalTitle.textContent=p.title; modalPrice.textContent=p.price; modalDesc.textContent=p.desc; qty.value=1;
+      modal.style.display='flex';
+    }
+    document.getElementById('close-modal').addEventListener('click',()=>modal.style.display='none');
+
+    // Cart handling
+    function updateCartUI(){
+      document.getElementById('cart-count').textContent = cart.reduce((s,i)=>s+i.qty,0);
+      const ctn = document.getElementById('cart-contents');
+      if(cart.length===0){ ctn.innerHTML='<p class="muted">Your cart is empty</p>'; return; }
+      let html = '<ul class="cart-list">';
+      cart.forEach(item=>{
+        html+=`<li class="cart-item"><img src="${item.img}" alt=""><div style="flex:1"><div style="font-weight:700">${item.title}</div><div class=\"muted\">₹${item.price} × ${item.qty}</div></div><div style=\"text-align:right\"><div style=\"font-weight:700\">₹${item.price*item.qty}</div><button onclick=\"removeFromCart(${item.id})\" style=\"background:none;border:none;color:#f00;cursor:pointer\">Remove</button></div></li>`;
+      });
+      const total = cart.reduce((s,i)=>s+i.price*i.qty,0);
+      html += `</ul><div style=\"padding-top:8px;display:flex;justify-content:space-between;align-items:center\"><div style=\"font-weight:700\">Total</div><div style=\"font-weight:700\">₹${total}</div></div><div style=\"margin-top:12px\"><button class=\"btn\" onclick=\"checkout()\">Checkout</button></div>`;
+      ctn.innerHTML = html;
+    }
+
+    function addToCart(productId, amount=1){
+      const p = products.find(x=>x.id===productId); if(!p) return;
+      const existing = cart.find(i=>i.id===productId);
+      if(existing) existing.qty += amount; else cart.push({id:p.id,title:p.title,price:p.price,img:p.img,qty:amount});
+      updateCartUI();
+      alert('Added to cart: '+p.title);
+    }
+
+    function removeFromCart(id){ const idx = cart.findIndex(i=>i.id===id); if(idx>-1) cart.splice(idx,1); updateCartUI(); }
+
+    document.getElementById('add-to-cart-modal').addEventListener('click',()=>{
+      const q = Number(qty.value) || 1; addToCart(activeId,q); modal.style.display='none';
+    });
+
+    document.getElementById('open-cart').addEventListener('click',()=>{
+      document.querySelector('.grid-side').scrollIntoView({behavior:'smooth'});
+    });
+
+    function checkout(){
+      if(cart.length===0){ alert('Cart is empty'); return; }
+      // In a real store you'd integrate a payment gateway here. For demo, show a simple form prompt.
+      const name = prompt('Enter your name for the order'); if(!name) return;
+      const phone = prompt('Enter phone number'); if(!phone) return;
+      alert('Thanks '+name+'! We received your order. We will contact you at '+phone+'. (This is a demo checkout.)');
+      cart.length=0; updateCartUI();
+    }
+
+    // small helper to wire view buttons created in innerHTML
+    window.openModal = openModal; window.addToCart = addToCart; window.removeFromCart = removeFromCart; window.checkout = checkout; window.scrollToGallery = scrollToGallery;
+
+    renderGallery(); updateCartUI();
+  </script>
+</body>
+</html>
