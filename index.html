@@ -180,14 +180,16 @@
       document.querySelector('.grid-side').scrollIntoView({behavior:'smooth'});
     });
 
-    function checkout(){
+     function checkout(){
       if(cart.length===0){ alert('Cart is empty'); return; }
 	const phoneNumber = "7709110389"; // Replace with your WhatsApp number (no +, no dashes)
+            const name = prompt("What is your name?");
+            const address = prompt("What is your address?");
             
             // Convert cart array to a message string
             let message = "Hello, I would like to place an order.\n";
             cart.forEach((item) => {
-                message += `Product name: ${item.title}, Quantity: ${item.qty}\n`;
+                message += `Product name: ${item.title}, Quantity: ${item.qty}\n,Cust Name: ${name},Cust Add: ${address}`;
             });
 
             // Encode message for URL
@@ -207,4 +209,5 @@
     renderGallery(); updateCartUI();
   </script>
 </body>
+
 </html>
